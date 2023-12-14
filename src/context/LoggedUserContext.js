@@ -4,9 +4,7 @@ const LoggedUserContext = createContext();
 
 const LoggedUserContextProvider = () => {
   const [user, setUser] = useState({
-    name: 'Konrad',
-    surname: 'Pecyna',
-    isLogged: true,
+    isLogged: false,
   });
 
   return { user, setUser };

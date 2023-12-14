@@ -55,10 +55,11 @@ export const Navbar = () => {
           <Container>
             <LetterAvatar>
               {user.name?.slice(0, 1)}
-              {user.surname?.slice(0, 1)}
+              {/* {user.surname?.slice(0, 1)} */}
             </LetterAvatar>
             <StyledP>
-              Witaj, {user.name} {user.surname}
+              Witaj, {user.name}
+              {/* {user.surname} */}
             </StyledP>
           </Container>
           <StyledButton
