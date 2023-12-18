@@ -7,7 +7,7 @@ function Registration() {
   return (
     <Layout>
       <Container $column>
-        <h1>Hear, you can register your account</h1>
+        <h1>Here, you can register your account</h1>
         <RegisterFormFormik />
       </Container>
     </Layout>

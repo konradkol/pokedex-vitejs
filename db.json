@@ -6,8 +6,14 @@
       "email": "konrad@pecyna.pl",
       "password": "Konrad1!",
       "confirmPassword": "Konrad1!"
+    },
+    {
+      "id": 1702823504895,
+      "name": "Marcel",
+      "email": "marcel@gmail.com",
+      "password": "Marcel1!",
+      "confirmPassword": "Marcel1!"
     }
   ],
-  "favouritePokemons": [],
   "newPokemons": []
 }

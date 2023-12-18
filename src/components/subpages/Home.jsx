@@ -1,7 +1,5 @@
 import { useEffect, useState, useContext } from 'react';
 import { useQueries } from '@tanstack/react-query';
-// import styled from 'styled-components';
-// import { Link } from 'react-router-dom';
 
 import { fetchData } from '../../services/fetchData';
 import { StateOfAppContext } from '../../context/StateOfAppContext';
@@ -28,11 +26,6 @@ function Home() {
     'Wpisz nazwę Pokemona.',
   );
 
-  // console.log('name', name);
-  // console.log('page', page);
-  // console.log('arrayObj', arrayObj);
-  // console.log('state', state);
-
   const fetchPokemonsFromApiToPage = useQueries({
     queries: arrayObj[page]
       ? arrayObj[page]?.map((id) => ({
@@ -55,7 +48,6 @@ function Home() {
       };
     },
   });
-  // console.log('fetchPokemonsFromApiToPage', fetchPokemonsFromApiToPage);
 
   const fetchAllPokemonsFromApi = useQueries({
     queries: arr?.map((id) => ({
@@ -77,20 +69,16 @@ function Home() {
       };
     },
   });
-  // console.log('fetchAllPokemonsFromApi', fetchAllPokemonsFromApi);
 
   useEffect(() => {
     let offset = (page - 1) * 15 + 1;
-    // console.log('offset', offset);
     const pageArray = Array.from(
       { length: 15 },
       (_, index) => `${offset + index}`,
     );
-    // console.log('pageArray', pageArray);
     setArrayObj((prev) => {
       return { ...prev, [page]: pageArray };
     });
-    // console.log('arrayObj', arrayObj);
     setIfFetch(true);
     fetchPokemonsFromApiToPage.isSuccess &&
       setState((prev) => {
@@ -103,7 +91,6 @@ function Home() {
     fetchPokemonsFromApiToPage.data,
   ]);
 
-  // console.log('arrayObj', arrayObj);
   useEffect(() => {
     const arr = Array.from({ length: 151 }, (_, index) => `${index + 1}`);
     setArr(arr);
@@ -124,18 +111,30 @@ function Home() {
   }, [fetchAllPokemonsFromApi.data, fetchAllPokemonsFromApi.isSuccess]);
 
   useEffect(() => {
+    (state.allPokemonsFromApi?.length > 0) &
+      state.allPokemonsFromApi?.every((el) => typeof el !== 'undefined') &&
+      state.allPokemonsFromApi.some((el) => el.isFavourite === undefined) &&
+      setState((prev) => {
+        return {
+          ...prev,
+          allPokemonsFromApi: [...prev.allPokemonsFromApi].map((el) => {
+            return { ...el, isFavourite: false };
+          }),
+        };
+      });
+  });
+
+  useEffect(() => {
     setDataToDisplay(state[page]);
   }, [page, state]);
 
   useEffect(() => {
     const searchPokemons = (arr, name) => {
       if (!Array.isArray(arr)) return;
-      // console.log(arr);
       let index = name.length;
       const filteredArr = index
         ? arr?.filter((el) => el.name?.slice(0, index) === name)
         : [];
-      console.log('filteredArr', filteredArr);
       if (index === 0) {
         setDataToDisplay(state[page]);
         setIsSearchError(false);
@@ -155,8 +154,6 @@ function Home() {
 
     searchPokemons(state.allPokemonsFromApi, name);
   }, [name]);
-
-  // console.log('dataToDisplay', dataToDisplay);
 
   return (
     <Layout>

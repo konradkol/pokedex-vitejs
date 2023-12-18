@@ -48,7 +48,6 @@ const useRegisterAndLoginUser = (
         id: Date.now(),
         ...values,
       });
-      // console.log('Udało się.', response);
       if (response.status === 201) {
         snackBar(successMessage, 'success', 3000);
         if (isNavigate) navigate(isNavigate);

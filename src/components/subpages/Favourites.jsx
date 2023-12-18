@@ -7,13 +7,16 @@ import { PokemonCard } from '../shared/PokemonCard';
 import { PokemonsWrapper } from '../shared/PokemonsWrapper';
 
 function Favourites() {
-  const { state, setState } = useContext(StateOfAppContext);
+  const { state } = useContext(StateOfAppContext);
   console.log('favoritePokemons', Object.values(state.favouritePokemons));
 
   return (
     <Layout>
       <PokemonsWrapper>
-        {Object.values(state.favouritePokemons).length > 0 ? (
+        {(Object.values(state.favouritePokemons).length > 0) &
+        Object.values(state.favouritePokemons).every(
+          (el) => typeof el !== 'undefined',
+        ) ? (
           Object.values(state.favouritePokemons).map(
             ({
               id,
