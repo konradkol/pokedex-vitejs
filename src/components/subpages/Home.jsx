@@ -15,39 +15,14 @@ function Home() {
   const { state, setState } = useContext(StateOfAppContext);
   const [name, setName] = useState('');
   const [page, setPage] = useState(1);
-  const [arrayObj, setArrayObj] = useState({});
   const [arr, setArr] = useState([]);
   const [dataToDisplay, setDataToDisplay] = useState([]);
-  const [ifFetch, setIfFetch] = useState(false);
   const [ifFetchAllPokemonsFromApi, setIfFetchAllPokemonsFromApi] =
     useState(false);
   const [isSearchError, setIsSearchError] = useState(false);
   const [searchHelperText, setSearchHelperText] = useState(
     'Wpisz nazwę Pokemona.',
   );
-
-  const fetchPokemonsFromApiToPage = useQueries({
-    queries: arrayObj[page]
-      ? arrayObj[page]?.map((id) => ({
-          queryKey: ['pokemonListOnPage', id],
-          queryFn: () => fetchData(id),
-          gcTime: 1000 * 60 * 60,
-          staleTime: Infinity,
-          enabled: ifFetch,
-        }))
-      : [],
-    combine: (results) => {
-      return {
-        data: results.map((result) => result.data),
-        isPaused: results.some((result) => result.isPaused),
-        isPending: results.some((result) => result.isPending),
-        isLoading: results.some((result) => result.isLoading),
-        isError: results.some((result) => result.isError),
-        isSuccess: results.every((result) => result.isSuccess),
-        error: results.map((result) => result.error)[0],
-      };
-    },
-  });
 
   const fetchAllPokemonsFromApi = useQueries({
     queries: arr?.map((id) => ({
@@ -71,25 +46,22 @@ function Home() {
   });
 
   useEffect(() => {
-    let offset = (page - 1) * 15 + 1;
-    const pageArray = Array.from(
-      { length: 15 },
-      (_, index) => `${offset + index}`,
+    let offset = (page - 1) * 15;
+    let arrWithPokemonsToDisplay = [];
+
+    arrWithPokemonsToDisplay = state.allPokemonsFromApi.slice(
+      offset,
+      offset + 15,
     );
-    setArrayObj((prev) => {
-      return { ...prev, [page]: pageArray };
-    });
-    setIfFetch(true);
-    fetchPokemonsFromApiToPage.isSuccess &&
+    console.log(arrWithPokemonsToDisplay);
+
+    state.allPokemonsFromApi?.length > 0 &&
+      state.allPokemonsFromApi?.every((el) => typeof el !== 'undefined') &&
       setState((prev) => {
-        return { ...prev, [page]: fetchPokemonsFromApiToPage.data };
+        return { ...prev, [page]: arrWithPokemonsToDisplay };
       });
     setName('');
-  }, [
-    page,
-    fetchPokemonsFromApiToPage.isSuccess,
-    fetchPokemonsFromApiToPage.data,
-  ]);
+  }, [page, state.allPokemonsFromApi]);
 
   useEffect(() => {
     const arr = Array.from({ length: 151 }, (_, index) => `${index + 1}`);
@@ -99,29 +71,41 @@ function Home() {
 
   useEffect(() => {
     !(
-      (state.allPokemonsFromApi?.length > 0) &
+      state.allPokemonsFromApi?.length > 0 &&
       state.allPokemonsFromApi?.every((el) => typeof el !== 'undefined')
     ) &&
       setState((prev) => {
         return { ...prev, allPokemonsFromApi: fetchAllPokemonsFromApi.data };
       });
-    (state.allPokemonsFromApi?.length > 0) &
+    state.allPokemonsFromApi?.length > 0 &&
       state.allPokemonsFromApi?.every((el) => typeof el !== 'undefined') &&
       setIfFetchAllPokemonsFromApi(false);
   }, [fetchAllPokemonsFromApi.data, fetchAllPokemonsFromApi.isSuccess]);
 
   useEffect(() => {
-    (state.allPokemonsFromApi?.length > 0) &
-      state.allPokemonsFromApi?.every((el) => typeof el !== 'undefined') &&
-      state.allPokemonsFromApi.some((el) => el.isFavourite === undefined) &&
-      setState((prev) => {
-        return {
-          ...prev,
-          allPokemonsFromApi: [...prev.allPokemonsFromApi].map((el) => {
-            return { ...el, isFavourite: false };
-          }),
-        };
-      });
+    if (
+      state.allPokemonsFromApi?.length > 0 &&
+      state.allPokemonsFromApi?.every((el) => typeof el !== 'undefined')
+    ) {
+      if (state.allPokemonsFromApi.some((el) => el.isFavourite === undefined))
+        setState((prev) => {
+          return {
+            ...prev,
+            allPokemonsFromApi: [...prev.allPokemonsFromApi].map((el) => {
+              return { ...el, isFavourite: false };
+            }),
+          };
+        });
+      if (state.allPokemonsFromApi.some((el) => el.isFighting === undefined))
+        setState((prev) => {
+          return {
+            ...prev,
+            allPokemonsFromApi: [...prev.allPokemonsFromApi].map((el) => {
+              return { ...el, isFighting: false };
+            }),
+          };
+        });
+    }
   });
 
   useEffect(() => {
@@ -163,13 +147,15 @@ function Home() {
         name={name}
         setName={setName}
       />
-      <Paginations countPages={10} page={page} setPage={setPage} />
+      <Paginations countPages={11} page={page} setPage={setPage} />
       <PokemonsWrapper>
         {dataToDisplay?.length > 0 || dataToDisplay?.type === 'h1' ? (
           Array.isArray(dataToDisplay) ? (
             dataToDisplay?.map(
               ({
                 id,
+                isFavourite,
+                isFighting,
                 sprites,
                 name,
                 height,
@@ -179,6 +165,10 @@ function Home() {
               }) => (
                 <StyledLink key={id} to={`/PokemonDetails/${id}`}>
                   <PokemonCard
+                    $reduce
+                    to="forHome"
+                    isFavourite={isFavourite}
+                    isFighting={isFighting}
                     src={sprites.other.home.front_default}
                     name={name}
                     height={height}
@@ -192,23 +182,16 @@ function Home() {
           ) : (
             dataToDisplay
           )
-        ) : fetchPokemonsFromApiToPage.isPaused ||
-          fetchAllPokemonsFromApi.isPaused ? (
+        ) : fetchAllPokemonsFromApi.isPaused ? (
           <>
             <h1>
               Coś poszło nie tak...
               <br /> Sprawdź swoje połączenie internetowe
             </h1>
           </>
-        ) : fetchPokemonsFromApiToPage.isError ||
-          fetchAllPokemonsFromApi.isError ? (
-          <h1>
-            Error:{' '}
-            {fetchPokemonsFromApiToPage.error?.message ||
-              fetchAllPokemonsFromApi.error?.message}
-          </h1>
-        ) : fetchPokemonsFromApiToPage.isPending ||
-          fetchAllPokemonsFromApi.isPending ? (
+        ) : fetchAllPokemonsFromApi.isError ? (
+          <h1>Error: {fetchAllPokemonsFromApi.error?.message}</h1>
+        ) : fetchAllPokemonsFromApi.isPending ? (
           <h1>Loading...</h1>
         ) : null}
       </PokemonsWrapper>

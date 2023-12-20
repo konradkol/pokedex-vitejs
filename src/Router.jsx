@@ -1,5 +1,7 @@
 import { createBrowserRouter } from 'react-router-dom';
 
+import { RequireAuth } from './components/RequireAuth';
+
 import {
   Home,
   Favourites,
@@ -35,7 +37,11 @@ export const router = createBrowserRouter([
   },
   {
     path: '/edit',
-    element: <Edit />,
+    element: (
+      <RequireAuth>
+        <Edit />
+      </RequireAuth>
+    ),
   },
   {
     path: '*',

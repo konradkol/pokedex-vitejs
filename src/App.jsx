@@ -22,7 +22,6 @@ import {
 function App() {
   const { isDarkTheme, setIsDarkTheme } = ToogleThemeContextProvider();
   const { user, setUser } = LoggedUserContextProvider();
-  // const [state, setState] = useState({});
   const { state, setState } = StateOfAppContextProvider();
   console.log('STATEApp', state);
 

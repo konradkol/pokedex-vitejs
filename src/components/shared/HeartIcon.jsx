@@ -4,13 +4,13 @@ import styled from 'styled-components';
 const StyledSvg = styled.svg`
   cursor: pointer;
 
-  ${(props) => props.$red && { fill: 'red' }}
+  ${(props) => ({ fill: props.color })}
 `;
 
-export const HeartIcon = ({ size = 32, red }) => {
+export const HeartIcon = ({ size = 32, color = '#fff' }) => {
   return (
     <StyledSvg
-      $red={red}
+      color={color}
       xmlns="http://www.w3.org/2000/svg"
       height={size}
       width={size}

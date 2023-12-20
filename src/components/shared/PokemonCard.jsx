@@ -1,13 +1,16 @@
 /* eslint-disable react/prop-types */
 import styled from 'styled-components';
+
 import { Container } from './Container';
+import { IconButton } from './IconButton';
+import { SwordsIcon } from './SwordsIcon';
+import { HeartIcon } from './HeartIcon';
 
 const Wrapper = styled(Container)`
   flex-direction: column;
   width: 20vw;
   min-width: 250px;
   padding-bottom: 15px;
-  /* background-color: aqua; */
   border-radius: 5px;
   box-shadow: 5px 5px 8px 2px;
   overflow: hidden;
@@ -34,9 +37,15 @@ const Wrapper = styled(Container)`
 
   &:active {
     opacity: 0.3;
-    scale: 0.9;
+    ${(props) => props.$reduce && { scale: '0.9' }}
     transition: scale 0.3s;
   }
+`;
+
+const IconsContainer = styled(Container)`
+  width: 100%;
+  justify-content: end;
+  margin: 5px 5px 0 0;
 `;
 
 const Row = styled(Container)`
@@ -53,6 +62,13 @@ const Title = styled.p`
 `;
 
 export const PokemonCard = ({
+  id,
+  $reduce,
+  to,
+  isFighting,
+  isFavourite,
+  handleClickFight,
+  handleClickFavourite,
   src,
   name,
   height,
@@ -61,7 +77,38 @@ export const PokemonCard = ({
   ability,
 }) => {
   return (
-    <Wrapper>
+    <Wrapper $reduce={$reduce}>
+      <IconsContainer>
+        {to === 'forHome' && (
+          <>
+            <IconButton>
+              {isFighting ? (
+                <SwordsIcon color="#00f" size={'22'} />
+              ) : (
+                <SwordsIcon color="transparent" size={'22'} />
+              )}
+            </IconButton>
+            <IconButton>
+              {isFavourite ? (
+                <HeartIcon color="#f00" size={'25'} />
+              ) : (
+                <HeartIcon color="transparent" size={'25'} />
+              )}
+            </IconButton>
+          </>
+        )}
+        {to === 'forFavourite' && (
+          <IconButton id={id} onClick={handleClickFavourite}>
+            {isFavourite && <HeartIcon color="#f00" size={'25'} />}
+          </IconButton>
+        )}
+        {to === 'forFighting' && (
+          <IconButton onClick={handleClickFight}>
+            {isFighting && <SwordsIcon color="#00f" size={'22'} />}
+          </IconButton>
+        )}
+      </IconsContainer>
+
       <Container>
         <img width="100%" src={src} alt={`image_${name}`} />
       </Container>

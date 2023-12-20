@@ -4,6 +4,8 @@ import { Link } from 'react-router-dom';
 
 import { Container } from './Container';
 import { HeartIcon } from './HeartIcon';
+import { SwordsIcon } from './SwordsIcon';
+import { IconButton } from '../shared/IconButton';
 
 const Wrapper = styled(Container)`
   flex-direction: column;
@@ -35,9 +37,9 @@ const Wrapper = styled(Container)`
   }
 `;
 
-const StyledButton = styled.button`
-  background-color: transparent;
-  border: none;
+const HeaderContainer = styled(Container)`
+  width: 95%;
+  justify-content: space-between;
 `;
 
 const Row = styled(Container)`
@@ -64,8 +66,10 @@ const StyledLink = styled(Link)`
 `;
 
 export const PokemonDetailsCard = ({
+  isFighting,
   isFavourite,
-  onClick,
+  handleClickFight,
+  handleClickFavourite,
   src,
   name,
   height,
@@ -75,14 +79,25 @@ export const PokemonDetailsCard = ({
 }) => {
   return (
     <Wrapper>
-      <p>Strona szczegółów Pokemona</p>
-      <StyledButton onClick={onClick}>
-        {isFavourite ? (
-          <HeartIcon red size={'42'} />
-        ) : (
-          <HeartIcon size={'42'} />
-        )}
-      </StyledButton>
+      <HeaderContainer>
+        <p>Strona szczegółów Pokemona</p>
+        <Container>
+          <IconButton onClick={handleClickFight}>
+            {isFighting ? (
+              <SwordsIcon color="#00f" size={'30'} />
+            ) : (
+              <SwordsIcon size={'30'} />
+            )}
+          </IconButton>
+          <IconButton onClick={handleClickFavourite}>
+            {isFavourite ? (
+              <HeartIcon color="#f00" size={'40'} />
+            ) : (
+              <HeartIcon size={'40'} />
+            )}
+          </IconButton>
+        </Container>
+      </HeaderContainer>
       <h1>Pokedex</h1>
       <Row>
         <img width="40%" src={src} alt={`image_${name}`} />

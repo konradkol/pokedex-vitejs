@@ -1,4 +1,4 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 
 import { StateOfAppContext } from '../../context/StateOfAppContext';
 
@@ -7,19 +7,65 @@ import { PokemonCard } from '../shared/PokemonCard';
 import { PokemonsWrapper } from '../shared/PokemonsWrapper';
 
 function Favourites() {
-  const { state } = useContext(StateOfAppContext);
+  const { state, setState } = useContext(StateOfAppContext);
   console.log('favoritePokemons', Object.values(state.favouritePokemons));
+  const [idElement, setIdElement] = useState();
+
+  const handleClickFavourite = (e) => {
+    const idItem = Number(e.target.parentElement.id);
+    setIdElement(idItem);
+    console.log('idElement', idElement);
+    setState((prev) => {
+      return {
+        ...prev,
+        allPokemonsFromApi: [...prev.allPokemonsFromApi].map((el) => {
+          if (el.id === idElement) {
+            return {
+              ...el,
+              isFavourite: false,
+              // isFavourite: !prev.allPokemonsFromApi[idElement - 1].isFavourite,
+            };
+          } else {
+            return el;
+          }
+        }),
+      };
+    });
+  };
+
+  useEffect(() => {
+    typeof idElement !== 'undefined' &&
+    // typeof state.allPokemonsFromApi[idElement - 1]?.isFavourite === object &&
+    state.allPokemonsFromApi[idElement - 1].isFavourite
+      ? setState((prev) => {
+          return {
+            ...prev,
+            favouritePokemons: {
+              ...prev.favouritePokemons,
+              [idElement]: state.allPokemonsFromApi[idElement - 1],
+            },
+          };
+        })
+      : setState((prev) => {
+          const { [idElement]: el, ...rest } = prev.favouritePokemons;
+          return {
+            ...prev,
+            favouritePokemons: { ...rest },
+          };
+        });
+  }, [idElement, state.allPokemonsFromApi]);
 
   return (
     <Layout>
       <PokemonsWrapper>
-        {(Object.values(state.favouritePokemons).length > 0) &
+        {Object.values(state.favouritePokemons).length > 0 &&
         Object.values(state.favouritePokemons).every(
           (el) => typeof el !== 'undefined',
         ) ? (
           Object.values(state.favouritePokemons).map(
             ({
               id,
+              isFavourite,
               sprites,
               name,
               height,
@@ -28,6 +74,10 @@ function Favourites() {
               base_experience,
             }) => (
               <PokemonCard
+                id={id}
+                to="forFavourite"
+                isFavourite={isFavourite}
+                handleClickFavourite={handleClickFavourite}
                 key={id}
                 src={sprites?.other.home.front_default}
                 name={name}

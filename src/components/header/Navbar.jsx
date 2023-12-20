@@ -65,6 +65,7 @@ export const Navbar = () => {
           <StyledButton
             onClick={() => {
               setUser({ isLogged: false });
+              localStorage.removeItem('user');
             }}
           >
             Logout

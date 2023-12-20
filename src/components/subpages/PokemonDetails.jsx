@@ -13,8 +13,10 @@ export const PokemonDetails = () => {
   const idPokemon = parseInt(id);
 
   const { state, setState } = useContext(StateOfAppContext);
-  console.log('state', state);
-  const [isShowMessage, setIsShowMessage] = useState(false);
+  // console.log('state', state);
+  const [arrWithFightingPokemons, setArrWithFightingPokemons] = useState([]);
+  const [isShowFavouriteMessage, setIsShowFavouriteMessage] = useState(false);
+  const [isShowFightingMessage, setIsShowFightingMessage] = useState(false);
 
   const { enqueueSnackbar } = useSnackbar();
 
@@ -28,9 +30,46 @@ export const PokemonDetails = () => {
       autoHideDuration: time,
     });
   };
+  const handleClickFight = () => {
+    setIsShowFightingMessage(true);
 
-  const handleClick = () => {
-    setIsShowMessage(true);
+    setState((prev) => {
+      return {
+        ...prev,
+        allPokemonsFromApi: [...prev.allPokemonsFromApi].map((el) => {
+          if (el.id === idPokemon) {
+            if (el.isFighting === false) {
+              if (arrWithFightingPokemons.length < 2) {
+                return {
+                  ...el,
+                  isFighting: true,
+                };
+              } else {
+                return el;
+              }
+            } else if (el.isFighting === true) {
+              return {
+                ...el,
+                isFighting: false,
+              };
+            }
+          } else {
+            return el;
+          }
+        }),
+      };
+    });
+  };
+
+  useEffect(() => {
+    setArrWithFightingPokemons(
+      state.allPokemonsFromApi.filter((el) => el.isFighting === true),
+    );
+  }, [state.allPokemonsFromApi]);
+
+  const handleClickFavourite = () => {
+    setIsShowFavouriteMessage(true);
+
     setState((prev) => {
       return {
         ...prev,
@@ -67,26 +106,66 @@ export const PokemonDetails = () => {
           };
         });
 
+    state.allPokemonsFromApi[idPokemon - 1].isFighting
+      ? setState((prev) => {
+          return {
+            ...prev,
+            fightingPokemons: {
+              ...prev.fightingPokemons,
+              [id]: state.allPokemonsFromApi[idPokemon - 1],
+            },
+          };
+        })
+      : setState((prev) => {
+          const { [id]: el, ...rest } = prev.fightingPokemons;
+          return {
+            ...prev,
+            fightingPokemons: { ...rest },
+          };
+        });
+
     if (
-      (isShowMessage === true) &
+      isShowFavouriteMessage === true &&
       state.allPokemonsFromApi[idPokemon - 1].isFavourite
     )
       snackBar('Pokemon dodany do ulubionych', 'success', 3000);
     if (
-      (isShowMessage === true) &
+      isShowFavouriteMessage === true &&
       !state.allPokemonsFromApi[idPokemon - 1].isFavourite
     )
       snackBar('Pokemon usunięty z ulubionych', 'info', 3000);
-    setIsShowMessage(false);
-  }, [state.allPokemonsFromApi[idPokemon - 1].isFavourite]);
+
+    if (
+      arrWithFightingPokemons.length < 2 &&
+      isShowFightingMessage === true &&
+      state.allPokemonsFromApi[idPokemon - 1].isFighting
+    )
+      snackBar('Pokemon dodany do areny', 'success', 3000);
+
+    // --------------------------------------------------------
+    if (
+      arrWithFightingPokemons.length <= 2 &&
+      isShowFightingMessage === true &&
+      !state.allPokemonsFromApi[idPokemon - 1].isFighting
+    )
+      snackBar('Pokemon usunięty z areny', 'info', 3000);
+
+    setIsShowFavouriteMessage(false);
+    setIsShowFightingMessage(false);
+  }, [
+    state.allPokemonsFromApi[idPokemon - 1].isFavourite,
+    state.allPokemonsFromApi[idPokemon - 1].isFighting,
+  ]);
 
   return (
     <div>
       <Layout>
         <Container>
           <PokemonDetailsCard
+            isFighting={state.allPokemonsFromApi[idPokemon - 1].isFighting}
             isFavourite={state.allPokemonsFromApi[idPokemon - 1].isFavourite}
-            onClick={handleClick}
+            handleClickFight={handleClickFight}
+            handleClickFavourite={handleClickFavourite}
             src={
               state.allPokemonsFromApi[idPokemon - 1].sprites.other.home
                 .front_default
