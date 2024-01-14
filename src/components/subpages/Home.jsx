@@ -53,7 +53,7 @@ function Home() {
       offset,
       offset + 15,
     );
-    console.log(arrWithPokemonsToDisplay);
+    // console.log(arrWithPokemonsToDisplay);
 
     state.allPokemonsFromApi?.length > 0 &&
       state.allPokemonsFromApi?.every((el) => typeof el !== 'undefined') &&

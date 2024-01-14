@@ -14,12 +14,13 @@ function Favourites() {
   const handleClickFavourite = (e) => {
     const idItem = Number(e.target.parentElement.id);
     setIdElement(idItem);
-    console.log('idElement', idElement);
+    // console.log('idElement', idElement);
     setState((prev) => {
       return {
         ...prev,
         allPokemonsFromApi: [...prev.allPokemonsFromApi].map((el) => {
-          if (el.id === idElement) {
+          // if (el.id === idElement) {
+          if (el.id === idItem) {
             return {
               ...el,
               isFavourite: false,
@@ -36,7 +37,7 @@ function Favourites() {
   useEffect(() => {
     typeof idElement !== 'undefined' &&
     // typeof state.allPokemonsFromApi[idElement - 1]?.isFavourite === object &&
-    state.allPokemonsFromApi[idElement - 1].isFavourite
+    state.allPokemonsFromApi[idElement - 1]?.isFavourite
       ? setState((prev) => {
           return {
             ...prev,

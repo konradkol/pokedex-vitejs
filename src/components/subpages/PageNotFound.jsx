@@ -1,5 +1,6 @@
 import { Link } from 'react-router-dom';
 import styled from 'styled-components';
+
 import Layout from '../shared/Layout';
 
 const Div = styled.div`
