@@ -13,7 +13,6 @@ export const PokemonDetails = () => {
   const idPokemon = parseInt(id);
 
   const { state, setState } = useContext(StateOfAppContext);
-  // console.log('state', state);
   const [arrWithFightingPokemons, setArrWithFightingPokemons] = useState([]);
   const [isShowFavouriteMessage, setIsShowFavouriteMessage] = useState(false);
   const [isShowFightingMessage, setIsShowFightingMessage] = useState(false);
@@ -142,7 +141,6 @@ export const PokemonDetails = () => {
     )
       snackBar('Pokemon dodany do areny', 'success', 3000);
 
-    // --------------------------------------------------------
     if (
       arrWithFightingPokemons.length <= 2 &&
       isShowFightingMessage === true &&

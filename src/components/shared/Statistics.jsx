@@ -6,7 +6,6 @@ const Div = styled.div`
   justify-content: center;
   align-items: center;
   flex-direction: column;
-  /* ${(props) => props.$column && { flexDirection: 'column' }} */
   padding: 5px;
   border: 2px solid;
   border-radius: 10px;

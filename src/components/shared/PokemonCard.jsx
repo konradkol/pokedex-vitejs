@@ -29,6 +29,8 @@ const Wrapper = styled(Container)`
   );
   background: linear-gradient(135deg, #ff432f 0%, #58ff3e 50%, #381dec 100%);
 
+  ${(props) => props.$opacity && { opacity: 0.2 }};
+
   &:hover {
     cursor: pointer;
     scale: 1.05;
@@ -63,6 +65,7 @@ const Title = styled.p`
 
 export const PokemonCard = ({
   id,
+  $opacity,
   $reduce,
   to,
   isFighting,
@@ -77,7 +80,7 @@ export const PokemonCard = ({
   ability,
 }) => {
   return (
-    <Wrapper $reduce={$reduce}>
+    <Wrapper $opacity={$opacity} $reduce={$reduce}>
       <IconsContainer>
         {to === 'forHome' && (
           <>

@@ -15,5 +15,24 @@
       "confirmPassword": "Marcel1!"
     }
   ],
-  "newPokemons": []
+  "newPokemons": [],
+  "favouritePokemons": [],
+  "fightingPokemons": [
+    {
+      "id": 1,
+      "name": "bulbasaur",
+      "base_experience": 64,
+      "totalFights": 3,
+      "wonFights": 0,
+      "lostFights": 3
+    },
+    {
+      "id": 2,
+      "name": "ivysaur",
+      "base_experience": 162,
+      "totalFights": 2,
+      "wonFights": 2,
+      "lostFights": 0
+    }
+  ]
 }

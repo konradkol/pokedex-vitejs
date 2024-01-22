@@ -63,17 +63,17 @@ const useRegisterAndLoginUser = (
   const handleSubmit = async (values, { setSubmitting }) => {
     if (whichType === 'forRegister') {
       await fetchData();
-      const ifAddUser = !arrayData.some((u) => u.name === values.name);
+      const ifAddUser = !arrayData.some((u) => u.email === values.email);
       ifAddUser && mutation.mutate(values);
       !ifAddUser &&
         snackBar(
-          'Użytkownik z takim "Name" jest już zarejestrowany. Spróbuj użyć innego Name...',
+          'Użytkownik z takim "email" jest już zarejestrowany. Spróbuj użyć innego email...',
           'info',
           5000,
         );
     } else if (whichType === 'forLogin') {
       await fetchData();
-      const users = arrayData.filter((u) => u.name === values.name);
+      const users = arrayData.filter((u) => u.email === values.email);
       const user = users[0];
       const ifLoginUser = users.some((u) => u.password === values.password);
       if (ifLoginUser) {
