@@ -3,29 +3,24 @@ import { Link } from 'react-router-dom';
 import styled from 'styled-components';
 import { Button } from '@mui/material';
 
-import { ToogleThemeContext } from '../../context/ToogleThemeContext';
+import { ToggleThemeContext } from '../../context/ToggleThemeContext';
 import { LoggedUserContext } from '../../context/LoggedUserContext';
 
 import { Nav } from './Nav';
 import { LetterAvatar } from './LetterAvatar';
 import { Container } from '../shared/Container';
-import logo_pokeapi from '../../images/logo_pokeapi.png';
 import DarkModeIcon from './DarkModeIcon';
 import LightModeIcon from './LightModeIcon';
-// import { Button } from '../shared/Button';
+
+import logo_pokeapi from '../../images/logo_pokeapi.png';
 
 const NavbarContainer = styled(Container)`
-  position: sticky;
-  top: 0px;
-  /* width: 100%; */
   justify-content: space-between;
   padding: 20px 20px;
-  /* overflow: auto; */
 `;
 
 const StyledButton = styled(Button)`
   margin-left: 10px;
-  /* background-color: transparent; */
 `;
 
 const StyledLink = styled(Link)`
@@ -33,7 +28,6 @@ const StyledLink = styled(Link)`
   border: 2px solid;
   border-radius: 6px;
   padding: 6px 8px;
-  /* color: rgb(82, 136, 216); */
 `;
 
 const StyledP = styled.p`
@@ -41,7 +35,7 @@ const StyledP = styled.p`
 `;
 
 export const Navbar = () => {
-  const { isDarkTheme, setIsDarkTheme } = useContext(ToogleThemeContext);
+  const { isDarkTheme, setIsDarkTheme } = useContext(ToggleThemeContext);
   const { user, setUser } = useContext(LoggedUserContext);
   return (
     <NavbarContainer>
@@ -53,14 +47,8 @@ export const Navbar = () => {
       {user?.isLogged ? (
         <>
           <Container>
-            <LetterAvatar>
-              {user.name?.slice(0, 1)}
-              {/* {user.surname?.slice(0, 1)} */}
-            </LetterAvatar>
-            <StyledP>
-              Witaj, {user.name}
-              {/* {user.surname} */}
-            </StyledP>
+            <LetterAvatar>{user.name?.slice(0, 1)}</LetterAvatar>
+            <StyledP>Witaj, {user.name}</StyledP>
           </Container>
           <StyledButton
             onClick={() => {

@@ -1,9 +1,9 @@
 import { createContext, useState, useEffect } from 'react';
 import { useMediaQuery } from '@mui/material';
 
-const ToogleThemeContext = createContext();
+const ToggleThemeContext = createContext();
 
-const ToogleThemeContextProvider = () => {
+const ToggleThemeContextProvider = () => {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
   const [isDarkTheme, setIsDarkTheme] = useState(prefersDarkMode);
 
@@ -14,4 +14,4 @@ const ToogleThemeContextProvider = () => {
   return { isDarkTheme, setIsDarkTheme };
 };
 
-export { ToogleThemeContext, ToogleThemeContextProvider };
+export { ToggleThemeContext, ToggleThemeContextProvider };

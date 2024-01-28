@@ -10,7 +10,7 @@ function Favourites() {
   const { state, setState } = useContext(StateOfAppContext);
   const [idElement, setIdElement] = useState();
 
-  const handleClickFavourite = (e) => {
+  const handleClickRemoveFavourite = (e) => {
     const idItem = Number(e.target.parentElement.id);
     setIdElement(idItem);
     setState((prev) => {
@@ -73,7 +73,7 @@ function Favourites() {
                 id={id}
                 to="forFavourite"
                 isFavourite={isFavourite}
-                handleClickFavourite={handleClickFavourite}
+                handleClickFavourite={handleClickRemoveFavourite}
                 key={id}
                 src={sprites?.other.home.front_default}
                 name={name}
@@ -85,7 +85,8 @@ function Favourites() {
             ),
           )
         ) : (
-          <h1>Nie masz jeszcze ulubionych Pokemonów</h1>
+          // eslint-disable-next-line react/no-unescaped-entities
+          <h1>You don't have any favourite Pokemon yet. </h1>
         )}
       </PokemonsWrapper>
     </Layout>

@@ -114,9 +114,8 @@ function Arena() {
             )}
           </Container>
         ) : (
-          <>
-            <h1>W Arenie nie ma jeszcze żadnych Pokemonów</h1>
-          </>
+          // eslint-disable-next-line react/no-unescaped-entities
+          <h1>There aren't any Pokemon in the Arena yet.</h1>
         )}
       </PokemonsWrapper>
     </Layout>

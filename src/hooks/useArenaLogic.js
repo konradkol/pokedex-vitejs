@@ -5,7 +5,7 @@ import { fetchPokemonsFromServer } from '../services/fetchPokemonsFromServer';
 
 import { StateOfAppContext } from '../context/StateOfAppContext';
 
-const URL = 'http://localhost:3000/fightingPokemons';
+const URL = `${import.meta.env.VITE_URL_LOCAL_SERVER}fightingPokemons`;
 
 const useArenaLogic = () => {
   const { state, setState } = useContext(StateOfAppContext);

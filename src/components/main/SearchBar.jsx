@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-// import { useState } from 'react';
 import Box from '@mui/material/Box';
 import TextField from '@mui/material/TextField';
 
@@ -9,8 +7,6 @@ export const SearchBar = ({
   name,
   setName,
 }) => {
-  // const [name, setName] = useState('Wpisz nazwę Pokemona');
-
   return (
     <Box
       component="form"
@@ -37,8 +33,6 @@ export const SearchBar = ({
         }}
         helperText={helperText}
       />
-      {/* <TextField id="filled-basic" label="Filled" variant="filled" /> */}
-      {/* <TextField id="standard-basic" label="Standard" variant="standard" /> */}
     </Box>
   );
 };

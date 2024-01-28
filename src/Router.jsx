@@ -9,6 +9,7 @@ import {
   Login,
   Registration,
   Edit,
+  EditForm,
   PageNotFound,
   PokemonDetails,
 } from './components/subpages/index';
@@ -40,6 +41,14 @@ export const router = createBrowserRouter([
     element: (
       <RequireAuth>
         <Edit />
+      </RequireAuth>
+    ),
+  },
+  {
+    path: '/editForm/:id',
+    element: (
+      <RequireAuth>
+        <EditForm />
       </RequireAuth>
     ),
   },

@@ -10,22 +10,14 @@ const dataForUserIsLogin = [
   { id: crypto.randomUUID(), to: '/', text: 'HOME' },
   { id: crypto.randomUUID(), to: '/favourites', text: 'FAVOURITES' },
   { id: crypto.randomUUID(), to: '/arena', text: 'ARENA' },
-  // { id: crypto.randomUUID(), to: '/profile', text: '' },
-];
-
-const dataForUserIsLogout = [
-  { id: crypto.randomUUID(), to: '/login', text: 'LOGIN' },
-  { id: crypto.randomUUID(), to: '/registration', text: 'REGISTRATION' },
 ];
 
 const NavContainer = styled(Container)`
-  /* gap: 20px; */
   ul {
     column-gap: 30px;
   }
   a {
     text-decoration: none;
-    /* color: #0026ff; */
   }
   .active {
     color: green;
@@ -33,7 +25,7 @@ const NavContainer = styled(Container)`
 `;
 
 export const Nav = () => {
-  const { user, setUser } = useContext(LoggedUserContext);
+  const { user } = useContext(LoggedUserContext);
 
   return (
     <NavContainer as="nav">
@@ -43,18 +35,10 @@ export const Nav = () => {
             <NavLink to={to}>{text}</NavLink>
           </Container>
         ))}
-        {user?.isLogged ? (
+        {user?.isLogged && (
           <Container as="li">
             <NavLink to="/edit">EDIT</NavLink>
           </Container>
-        ) : (
-          <>
-            {dataForUserIsLogout.map(({ id, to, text }) => (
-              <Container key={id} as="li">
-                <NavLink to={to}>{text}</NavLink>
-              </Container>
-            ))}
-          </>
         )}
       </Container>
     </NavContainer>

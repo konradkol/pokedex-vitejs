@@ -13,9 +13,9 @@ const useRegisterAndLoginUser = (
   isNavigate,
   whichType,
 ) => {
-  const { setUser } = useContext(LoggedUserContext);
+  const URL = import.meta.env.VITE_URL_LOCAL_SERVER;
 
-  const URL = 'http://localhost:3000/';
+  const { setUser } = useContext(LoggedUserContext);
 
   const { enqueueSnackbar } = useSnackbar();
   const navigate = useNavigate();
@@ -73,7 +73,7 @@ const useRegisterAndLoginUser = (
         );
     } else if (whichType === 'forLogin') {
       await fetchData();
-      const users = arrayData.filter((u) => u.email === values.email);
+      const users = arrayData.filter((u) => u.name === values.name);
       const user = users[0];
       const ifLoginUser = users.some((u) => u.password === values.password);
       if (ifLoginUser) {

@@ -4,8 +4,9 @@ import Arena from './Arena';
 import Login from './Login';
 import Registration from './Registration';
 import Edit from './Edit';
+import EditForm from './EditForm';
+import PokemonDetails from './PokemonDetails';
 import PageNotFound from './PageNotFound';
-import { PokemonDetails } from './PokemonDetails';
 
 export {
   Home,
@@ -14,6 +15,7 @@ export {
   Login,
   Registration,
   Edit,
+  EditForm,
   PageNotFound,
   PokemonDetails,
 };

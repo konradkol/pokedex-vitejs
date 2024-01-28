@@ -7,9 +7,9 @@ import { SnackbarProvider } from 'notistack';
 
 import { router } from './Router';
 import {
-  ToogleThemeContext,
-  ToogleThemeContextProvider,
-} from './context/ToogleThemeContext';
+  ToggleThemeContext,
+  ToggleThemeContextProvider,
+} from './context/ToggleThemeContext';
 import {
   LoggedUserContext,
   LoggedUserContextProvider,
@@ -20,10 +20,9 @@ import {
 } from './context/StateOfAppContext';
 
 function App() {
-  const { isDarkTheme, setIsDarkTheme } = ToogleThemeContextProvider();
+  const { isDarkTheme, setIsDarkTheme } = ToggleThemeContextProvider();
   const { user, setUser } = LoggedUserContextProvider();
   const { state, setState } = StateOfAppContextProvider();
-  console.log('STATEApp', state);
 
   const queryClient = new QueryClient();
 
@@ -34,10 +33,6 @@ function App() {
           mode: isDarkTheme ? 'dark' : 'light',
 
           background: { default: `${isDarkTheme ? '#242121' : '#daeee7'}` },
-          // background: { paper: '#aaa', default: '#888' },
-          // primary: { main: '#22a53e' },
-          // secondary: { main: '#ece24e' },
-          // info: { main: '#22a53e' },
         },
       }),
     [isDarkTheme],
@@ -46,7 +41,7 @@ function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <LoggedUserContext.Provider value={{ user, setUser }}>
-        <ToogleThemeContext.Provider value={{ isDarkTheme, setIsDarkTheme }}>
+        <ToggleThemeContext.Provider value={{ isDarkTheme, setIsDarkTheme }}>
           <StateOfAppContext.Provider value={{ state, setState }}>
             <ThemeProvider theme={theme}>
               <CssBaseline enableColorScheme />
@@ -56,7 +51,7 @@ function App() {
               </SnackbarProvider>
             </ThemeProvider>
           </StateOfAppContext.Provider>
-        </ToogleThemeContext.Provider>
+        </ToggleThemeContext.Provider>
       </LoggedUserContext.Provider>
     </QueryClientProvider>
   );

@@ -11,7 +11,10 @@ const useHomeLogic = () => {
   const [page, setPage] = useState(1);
   const [arr, setArr] = useState([]);
   const [dataToDisplay, setDataToDisplay] = useState([]);
-  const [pokemonsFromServer, setPokemonsFromServer] = useState([]);
+  const [fightingPokemonsFromServer, setFightingPokemonsFromServer] = useState(
+    [],
+  );
+  const [editedPokemonsFromServer, setEditedPokemonsFromServer] = useState([]);
   const [ifFetchAllPokemonsFromApi, setIfFetchAllPokemonsFromApi] =
     useState(false);
   const [isSearchError, setIsSearchError] = useState(false);
@@ -19,7 +22,13 @@ const useHomeLogic = () => {
     'Wpisz nazwę Pokemona.',
   );
 
-  const URL = 'http://localhost:3000/fightingPokemons';
+  const URL_FightingPokemons = `${
+    import.meta.env.VITE_URL_LOCAL_SERVER
+  }fightingPokemons`;
+
+  const URL_EditedPokemons = `${
+    import.meta.env.VITE_URL_LOCAL_SERVER
+  }editedPokemons`;
 
   const fetchAllPokemonsFromApi = useQueries({
     queries: arr?.map((id) => ({
@@ -118,12 +127,51 @@ const useHomeLogic = () => {
       state.allPokemonsFromApi?.length > 0 &&
       state.allPokemonsFromApi?.every((el) => typeof el !== 'undefined')
     ) {
-      if (pokemonsFromServer.length > 0) {
+      if (editedPokemonsFromServer.length > 0) {
         setState((prev) => {
           return {
             ...prev,
             allPokemonsFromApi: prev.allPokemonsFromApi.map((el) => {
-              const arrWithFindPokemon = pokemonsFromServer.filter(
+              const arrWithEditedPokemon = editedPokemonsFromServer.filter(
+                (item) => item.id === el.id,
+              );
+              const editedPokemon = arrWithEditedPokemon[0];
+              if (arrWithEditedPokemon.length) {
+                return {
+                  ...el,
+                  weight: editedPokemon.weight,
+                  height: editedPokemon.height,
+                  base_experience: editedPokemon.base_experience,
+                };
+              } else {
+                return el;
+              }
+            }),
+          };
+        });
+      }
+    }
+  }, [
+    editedPokemonsFromServer,
+    fetchAllPokemonsFromApi.data,
+    fetchAllPokemonsFromApi.isSuccess,
+  ]);
+
+  useEffect(() => {
+    fetchPokemonsFromServer(URL_EditedPokemons, setEditedPokemonsFromServer);
+  }, []);
+
+  useEffect(() => {
+    if (
+      state.allPokemonsFromApi?.length > 0 &&
+      state.allPokemonsFromApi?.every((el) => typeof el !== 'undefined')
+    ) {
+      if (fightingPokemonsFromServer.length > 0) {
+        setState((prev) => {
+          return {
+            ...prev,
+            allPokemonsFromApi: prev.allPokemonsFromApi.map((el) => {
+              const arrWithFindPokemon = fightingPokemonsFromServer.filter(
                 (item) => item.id === el.id,
               );
               const findPokemon = arrWithFindPokemon[0];
@@ -144,16 +192,17 @@ const useHomeLogic = () => {
       }
     }
   }, [
-    pokemonsFromServer,
+    fightingPokemonsFromServer,
     fetchAllPokemonsFromApi.data,
     fetchAllPokemonsFromApi.isSuccess,
   ]);
 
   useEffect(() => {
-    fetchPokemonsFromServer(URL, setPokemonsFromServer);
+    fetchPokemonsFromServer(
+      URL_FightingPokemons,
+      setFightingPokemonsFromServer,
+    );
   }, []);
-
-  console.log('pokemonsFromServer', pokemonsFromServer);
 
   useEffect(() => {
     setDataToDisplay(state[page]);

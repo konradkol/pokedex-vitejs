@@ -8,7 +8,7 @@ import Layout from '../shared/Layout';
 import { PokemonDetailsCard } from '../shared/PokemonDetailsCard';
 import { Container } from '../shared/Container';
 
-export const PokemonDetails = () => {
+const PokemonDetails = () => {
   const { id } = useParams();
   const idPokemon = parseInt(id);
 
@@ -156,30 +156,30 @@ export const PokemonDetails = () => {
   ]);
 
   return (
-    <div>
-      <Layout>
-        <Container>
-          <PokemonDetailsCard
-            isFighting={state.allPokemonsFromApi[idPokemon - 1].isFighting}
-            isFavourite={state.allPokemonsFromApi[idPokemon - 1].isFavourite}
-            handleClickFight={handleClickFight}
-            handleClickFavourite={handleClickFavourite}
-            src={
-              state.allPokemonsFromApi[idPokemon - 1].sprites.other.home
-                .front_default
-            }
-            name={state.allPokemonsFromApi[idPokemon - 1].name}
-            height={state.allPokemonsFromApi[idPokemon - 1].height}
-            weight={state.allPokemonsFromApi[idPokemon - 1].weight}
-            ability={
-              state.allPokemonsFromApi[idPokemon - 1].abilities[0].ability.name
-            }
-            baseExperience={
-              state.allPokemonsFromApi[idPokemon - 1].base_experience
-            }
-          />
-        </Container>
-      </Layout>
-    </div>
+    <Layout>
+      <Container>
+        <PokemonDetailsCard
+          isFighting={state.allPokemonsFromApi[idPokemon - 1].isFighting}
+          isFavourite={state.allPokemonsFromApi[idPokemon - 1].isFavourite}
+          handleClickFight={handleClickFight}
+          handleClickFavourite={handleClickFavourite}
+          src={
+            state.allPokemonsFromApi[idPokemon - 1].sprites.other.home
+              .front_default
+          }
+          name={state.allPokemonsFromApi[idPokemon - 1].name}
+          height={state.allPokemonsFromApi[idPokemon - 1].height}
+          weight={state.allPokemonsFromApi[idPokemon - 1].weight}
+          ability={
+            state.allPokemonsFromApi[idPokemon - 1].abilities[0].ability.name
+          }
+          baseExperience={
+            state.allPokemonsFromApi[idPokemon - 1].base_experience
+          }
+        />
+      </Container>
+    </Layout>
   );
 };
+
+export default PokemonDetails;
