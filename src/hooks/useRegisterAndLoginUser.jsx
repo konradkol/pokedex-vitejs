@@ -73,7 +73,7 @@ const useRegisterAndLoginUser = (
         );
     } else if (whichType === 'forLogin') {
       await fetchData();
-      const users = arrayData.filter((u) => u.name === values.name);
+      const users = arrayData.filter((u) => u.email === values.email);
       const user = users[0];
       const ifLoginUser = users.some((u) => u.password === values.password);
       if (ifLoginUser) {

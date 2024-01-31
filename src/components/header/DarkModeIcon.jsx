@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 function DarkModeIcon({ size = '24px', fill = '#000' }) {
   return (
     <svg

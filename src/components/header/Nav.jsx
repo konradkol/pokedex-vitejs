@@ -20,15 +20,22 @@ const NavContainer = styled(Container)`
     text-decoration: none;
   }
   .active {
-    color: green;
+    color: #008000;
+  }
+
+  @media (max-width: 920px) {
+    ul {
+      flex-direction: column;
+      align-items: start;
+    }
   }
 `;
 
-export const Nav = () => {
+export const Nav = ({ className }) => {
   const { user } = useContext(LoggedUserContext);
 
   return (
-    <NavContainer as="nav">
+    <NavContainer className={className} as="nav">
       <Container as="ul">
         {dataForUserIsLogin.map(({ id, to, text }) => (
           <Container key={id} as="li">

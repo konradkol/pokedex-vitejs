@@ -1,5 +1,3 @@
-/* eslint-disable react/prop-types */
-
 function LightModeIcon({ size = '24px', fill = '#FFF' }) {
   return (
     <svg

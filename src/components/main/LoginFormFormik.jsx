@@ -8,7 +8,9 @@ import { FormWrap, Row, Span, FormButton } from '../shared/forFormComponents';
 
 export const LoginFormFormik = () => {
   const validationSchema = Yup.object({
-    name: Yup.string().required('Pole "Name" jest wymagane.'),
+    email: Yup.string()
+      .email('Niepoprawny format adresu email.')
+      .required('Pole "Email" jest wymagane.'),
     password: Yup.string().required('Pole "Password" jest wymagane.'),
   });
 
@@ -23,7 +25,7 @@ export const LoginFormFormik = () => {
   return (
     <Formik
       initialValues={{
-        name: '',
+        email: '',
         password: '',
       }}
       validationSchema={validationSchema}
@@ -34,14 +36,14 @@ export const LoginFormFormik = () => {
           <Row>
             <InputField
               as={Field}
-              htmlFor="name"
-              label="Your name"
-              id="name"
-              type="name"
-              name="name"
-              placeholder="Name"
+              htmlFor="email"
+              label="Email"
+              id="email"
+              type="email"
+              name="email"
+              placeholder="name@example.com"
             >
-              <ErrorMessage name="name" component={Span} />
+              <ErrorMessage name="email" component={Span} />
             </InputField>
             <InputField
               as={Field}
